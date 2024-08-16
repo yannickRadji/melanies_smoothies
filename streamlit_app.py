@@ -25,7 +25,10 @@ option = st.multiselect(
 df_filter = my_dataframe.filter(col("SEARCH_ON").isin(option))
 df_anti_filter = my_dataframe.filter(~col("SEARCH_ON").isin(option))
 list_search_fruit = list(df_filter.toPandas()["SEARCH_ON"])
+st.write("init", list_search_fruit)
 list_search_fruit += list(df_anti_filter.toPandas()["SEARCH_ON"])
+st.write("after", list_search_fruit)
+
 
 if option:
     st.write("You selected:", option)
