@@ -13,20 +13,22 @@ st.write(
 
 cnx = st.connection("snowflake")
 session = cnx.session()
-my_dataframe = session.table("smoothies.public.fruit_options").select(col("FRUIT_NAME"))
+my_dataframe = session.table("smoothies.public.fruit_options").select(col("FRUIT_NAME"), col("SEARCH_ON"))
 st.dataframe(data=my_dataframe, use_container_width=True)
 
 name = st.text_input("Name on Smoothie:")
 st.write("the name on cup will be:", name)
 option = st.multiselect(
     "What is your favorite fruits?",
-    my_dataframe, max_selections = 5
+    my_dataframe.select(col("FRUIT_NAME")), max_selections = 5
 )
+list_search_fruit = my_dataframe.filter(my_dataframe.SEARCH_ON.isin(option)).collect()
+
 if option:
     st.write("You selected:", option)
     st.text(option)
     ingredients_string=" ".join(option)
-    for name in option:
+    for name in list_search_fruit:
         response = requests.get(f"https://www.fruityvice.com/api/fruit/{name}")
         if response.json().get("name"):
             st.subheader(name + "Nutrition Info")
