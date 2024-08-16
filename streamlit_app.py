@@ -2,6 +2,10 @@
 import streamlit as st
 from snowflake.snowpark.functions import col
 from functools import reduce
+import requests
+
+response = requests.get(f"https://www.fruityvice.com/api/fruit/{name}")
+fv_df = st.dataframe(data=response.json(), use_container_width=True)
 
 # Write directly to the app
 st.title("Customize your smoothie :cup_with_straw:")
@@ -25,7 +29,9 @@ if option:
     st.write("You selected:", option)
     st.text(option)
     ingredients_string=" ".join(option)
-    st.text(ingredients_string)
+    for name in option:
+        response = requests.get(f"https://www.fruityvice.com/api/fruit/{name}")
+        fv_df = st.dataframe(data=response.json(), use_container_width=True)
 
     my_insert_stmt = f" insert into smoothies.public.orders(ingredients, NAME_ON_ORDER) values ('{ingredients_string}','{name}')"
 
