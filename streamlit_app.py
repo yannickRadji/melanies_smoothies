@@ -28,7 +28,9 @@ if option:
     ingredients_string=" ".join(option)
     for name in option:
         response = requests.get(f"https://www.fruityvice.com/api/fruit/{name}")
-        fv_df = st.dataframe(data=response.json(), use_container_width=True)
+        if response.get("code") == 200:
+            st.subheader(name + "Nutrition Info")
+            fv_df = st.dataframe(data=response.json(), use_container_width=True)
 
     my_insert_stmt = f" insert into smoothies.public.orders(ingredients, NAME_ON_ORDER) values ('{ingredients_string}','{name}')"
 
