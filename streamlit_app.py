@@ -23,7 +23,7 @@ option = st.multiselect(
     my_dataframe.select(col("FRUIT_NAME")), max_selections = 5
 )
 df_filter = my_dataframe.filter(col("SEARCH_ON").isin(option))
-//old spark version so doesnt have df_filter.isEmpty()
+
 if not df_filter.rdd.isEmpty():
     list_init_fruit = list(df_filter.toPandas()["SEARCH_ON"])
     st.write("init", list_init_fruit)
