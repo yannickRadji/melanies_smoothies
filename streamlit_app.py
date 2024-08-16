@@ -22,7 +22,10 @@ option = st.multiselect(
     "What is your favorite fruits?",
     my_dataframe.select(col("FRUIT_NAME")), max_selections = 5
 )
-list_search_fruit = my_dataframe.filter(my_dataframe.SEARCH_ON.isin(option)).collect()
+df_filter = my_dataframe.filter(col("SEARCH_ON").isin(option))
+df_anti_filter = my_dataframe.filter(~col("SEARCH_ON").isin(option))
+list_search_fruit = list(df_filter.toPandas()["SEARCH_ON"])
+list_search_fruit += list(df_anti_filter.toPandas()["SEARCH_ON"])
 
 if option:
     st.write("You selected:", option)
