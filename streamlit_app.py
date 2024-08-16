@@ -23,10 +23,13 @@ option = st.multiselect(
     my_dataframe.select(col("FRUIT_NAME")), max_selections = 5
 )
 df_filter = my_dataframe.filter(col("SEARCH_ON").isin(option))
-list_init_fruit = list(df_filter.toPandas()["SEARCH_ON"])
-st.write("init", list_search_fruit)
-list_search_fruit = [item for item in option if item not in list_init_fruit] + list_init_fruit
-st.write("after", list_search_fruit)
+if not df_filter.is_empty():
+    list_init_fruit = list(df_filter.toPandas()["SEARCH_ON"])
+    st.write("init", list_init_fruit)
+    list_search_fruit = [item for item in option if item not in list_init_fruit] + list_init_fruit
+    st.write("after", list_search_fruit)
+else:
+    list_search_fruit = option
 
 
 if option:
