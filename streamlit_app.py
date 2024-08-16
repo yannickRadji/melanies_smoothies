@@ -1,11 +1,8 @@
 # Import python packages
 import streamlit as st
 from snowflake.snowpark.functions import col
-from functools import reduce
 import requests
 
-response = requests.get(f"https://www.fruityvice.com/api/fruit/{name}")
-fv_df = st.dataframe(data=response.json(), use_container_width=True)
 
 # Write directly to the app
 st.title("Customize your smoothie :cup_with_straw:")
